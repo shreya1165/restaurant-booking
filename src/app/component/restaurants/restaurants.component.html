@@ -1,0 +1,36 @@
+<div *ngIf="isloading">
+    <app-loader></app-loader>
+</div>
+
+<ng-container *ngIf="!isloading" >
+    
+    <mat-grid-list class="grid" cols="4" rowHeight="500px" >
+        <mat-grid-tile *ngFor="let element of dataSource.data" [routerLink]="['/booking', element.id]">
+            <mat-card class="example-card" appearance="outlined">
+                <mat-card-header>
+                  
+                    <mat-card-title>{{ element.name }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src={{element.img}} alt="Photo of a Shiba Inu">
+                <mat-card-content>
+                    <p>
+                        {{ element.text }} 
+                    </p>
+                    
+                    <p>Address: {{ element.address }}</p>
+                    <p><mat-icon  aria-hidden="false" aria-label="Example star icon" fontIcon="star"></mat-icon> {{ element.ratings }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-card *ngIf="dataSource.data.length === 0">
+        <mat-card-content>
+            No data available.
+        </mat-card-content>
+    </mat-card>
+</ng-container>
