@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format:check": "prettier --config ./.prettierrc --check \"src/{app,environments,assets}/**/*{.ts,.js,.html,.css}\""
   },
   "private": true,
   "dependencies": {

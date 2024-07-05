@@ -6,13 +6,20 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-booking-list',
   templateUrl: './booking-list.component.html',
-  styleUrls: ['./booking-list.component.css']
+  styleUrls: ['./booking-list.component.css'],
 })
 export class BookingListComponent implements OnInit {
   bookings: BookingList[] = [];
   dataSource: MatTableDataSource<BookingList>; // Remove '!' from dataSource declaration
 
-  displayedColumns: string[] = ['date', 'slot', 'numberOfPersons', 'option', 'restaurantName', 'actions'];
+  displayedColumns: string[] = [
+    'date',
+    'slot',
+    'numberOfPersons',
+    'option',
+    'restaurantName',
+    'actions',
+  ];
 
   constructor(private datePipe: DatePipe) {
     this.dataSource = new MatTableDataSource<BookingList>([]); // Initialize dataSource here
@@ -24,8 +31,8 @@ export class BookingListComponent implements OnInit {
 
   loadBookings() {
     this.bookings = Object.keys(localStorage)
-      .filter(key => key.startsWith('booking-'))
-      .map(key => {
+      .filter((key) => key.startsWith('booking-'))
+      .map((key) => {
         const booking = JSON.parse(localStorage.getItem(key)!);
         // Assigning a unique id based on the key (if it doesn't exist)
         if (!booking.id) {
@@ -36,7 +43,7 @@ export class BookingListComponent implements OnInit {
       });
 
     // Format date field in each booking
-    this.bookings.forEach(booking => {
+    this.bookings.forEach((booking) => {
       booking.date = this.datePipe.transform(booking.date, 'dd-MM-yyyy')!;
     });
 
@@ -53,7 +60,7 @@ export class BookingListComponent implements OnInit {
     localStorage.removeItem(`booking-${booking.id}`);
 
     // Remove from displayed list
-    this.bookings = this.bookings.filter(b => b.id !== booking.id);
+    this.bookings = this.bookings.filter((b) => b.id !== booking.id);
     this.dataSource.data = this.bookings;
   }
 }

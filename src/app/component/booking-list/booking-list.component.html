@@ -16,7 +16,9 @@
     <!-- Number of Persons Column -->
     <ng-container matColumnDef="numberOfPersons">
       <mat-header-cell *matHeaderCellDef>Persons</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{ booking.numberOfPersons }}</mat-cell>
+      <mat-cell *matCellDef="let booking">{{
+        booking.numberOfPersons
+      }}</mat-cell>
     </ng-container>
 
     <!-- Option Column -->
@@ -28,7 +30,9 @@
     <!-- Restaurant Name Column -->
     <ng-container matColumnDef="restaurantName">
       <mat-header-cell *matHeaderCellDef>Restaurant</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{ booking.restaurantName }}</mat-cell>
+      <mat-cell *matCellDef="let booking">{{
+        booking.restaurantName
+      }}</mat-cell>
     </ng-container>
 
     <!-- Actions Column -->
@@ -47,6 +51,6 @@
     <!-- Header Row -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <!-- Row with Data -->
-    <mat-row *matRowDef="let booking; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let booking; columns: displayedColumns"></mat-row>
   </mat-table>
 </div>

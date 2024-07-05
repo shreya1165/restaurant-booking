@@ -1,5 +1,3 @@
-
-
 <mat-card class="card">
   <form class="example-form" (ngSubmit)="booking()" name="bookingForm">
     <mat-form-field class="example-full-width">
@@ -8,7 +6,7 @@
         <mat-option *ngFor="let table of table" [value]="table.value">{{ table.viewValue }}</mat-option>
       </mat-select>
     </mat-form-field>
-    
+
 
     <mat-form-field class="example-full-width">
       <mat-label>Choose a date</mat-label>
@@ -25,7 +23,8 @@
     </mat-form-field>
 
     <!-- Move mat-radio-group outside of mat-form-field -->
-    <mat-radio-group class="example-full-width" aria-label="Select an option" [(ngModel)]="selectedOption" name="selectedOption">
+    <mat-radio-group class="example-full-width" aria-label="Select an option" [(ngModel)]="selectedOption"
+      name="selectedOption">
       <mat-radio-button value="left">left</mat-radio-button>
       <mat-radio-button value="center">center</mat-radio-button>
       <mat-radio-button value="right">right</mat-radio-button>
@@ -33,7 +32,5 @@
 
     <button class="example-full-width" mat-raised-button color="primary" type="submit">Book Now</button>
   </form>
-  
+
 </mat-card>
-
-

@@ -1,4 +1,4 @@
-import { createReducer, on } from "@ngrx/store";
+import { Action, createReducer, on } from "@ngrx/store";
 import { restaurantState } from "./restaurants.state";
 import { loadRestaurant, restaurantFail, restaurantSucess } from "./restaurants.actions";
 import { BookingState } from "../../core/interfaces/booking";
@@ -32,7 +32,7 @@ const _RestaurantReducer = createReducer(restaurantState,
 
 )
 
-export function RestaurantReducer(state: any, action: any) {
+export function RestaurantReducer(state: any, action: Action) {
     return _RestaurantReducer(state, action)
 }
 
@@ -52,6 +52,6 @@ const _bookingReducer = createReducer(
     }))
   );
   
-  export function bookingReducer(state: BookingState | undefined, action: any) {
+  export function bookingReducer(state: BookingState | undefined, action: Action) {
     return _bookingReducer(state, action);
   }
