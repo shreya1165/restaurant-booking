@@ -14,7 +14,7 @@ interface Slot {
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css'],
+  styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
   Restaurantlist$: Observable<Restaurants[]> | undefined;
@@ -48,13 +48,13 @@ export class BookingComponent implements OnInit {
     this.Restaurantlist$ = this.store.select(getrestaurantlist);
 
     // Subscribe to router params to get restaurant ID
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(params => {
       const restaurantId = params['id'];
 
       // Filter Restaurantlist$ based on restaurantId
       if (restaurantId && this.Restaurantlist$) {
-        this.Restaurantlist$.subscribe((restaurants) => {
-          const restaurant = restaurants.find((r) => r.id === restaurantId);
+        this.Restaurantlist$.subscribe(restaurants => {
+          const restaurant = restaurants.find(r => r.id === restaurantId);
           if (restaurant) {
             this.restaurantName = restaurant.name;
           }
@@ -64,74 +64,45 @@ export class BookingComponent implements OnInit {
   }
 
   booking() {
-    if (
-      this.selectedValue &&
-      this.selected &&
-      this.numberOfPersons &&
-      this.selectedOption &&
-      this.restaurantName
-    ) {
+    if (this.selectedValue && this.selected && this.numberOfPersons && this.selectedOption && this.restaurantName) {
+      // Generate a unique key for this booking
+      const bookingKey = `${this.restaurantName}-${this.selected.toISOString()}-${this.selectedValue}-${this.selectedOption}`;
+  
+      // Check if there's already a booking with the same details in localStorage
+      const existingBooking = localStorage.getItem(bookingKey);
+  
+      if (existingBooking) {
+        alert('Slot is already booked.');
+        return;
+      }
+  
       // Generate a unique id for this booking
       const bookingId = this.bookingIdCounter++;
-
-      // Generate a unique key for this booking
-      const bookingKey = `booking-${bookingId}-${this.selected.toISOString()}-${
-        this.selectedValue
-      }-${this.selectedOption}`;
-
-      const existingBooking = localStorage.getItem(bookingKey);
-
-      if (existingBooking) {
-        const parsedBooking = JSON.parse(existingBooking);
-        if (
-          parsedBooking.restaurantName === this.restaurantName &&
-          parsedBooking.slot === this.selectedValue &&
-          parsedBooking.option === this.selectedOption
-        ) {
-          alert('Slot is already booked.');
-          return;
-        }
-      }
-
-      // If no existing booking or no matching slot and option, create a new booking
-      console.log(
-        'Booking for:',
-        this.selected.toISOString(),
-        'at',
-        this.selectedValue,
-        'for',
-        this.numberOfPersons,
-        'persons',
-        'with option',
-        this.selectedOption,
-        'at restaurant',
-        this.restaurantName
-      );
-
+  
       // Dispatch action to store in NgRx store
-      this.store.dispatch(
-        bookRestaurantSlot({
-          id: bookingId,
-          date: this.selected,
-          slot: this.selectedValue,
-          numberOfPersons: this.numberOfPersons,
-          option: this.selectedOption,
-          restaurantName: this.restaurantName,
-        })
-      );
-
+      this.store.dispatch(bookRestaurantSlot({
+        id: bookingId,
+        date: this.selected,
+        slot: this.selectedValue,
+        numberOfPersons: this.numberOfPersons,
+        option: this.selectedOption,
+        restaurantName: this.restaurantName
+      }));
+  
       // Store booking details in localStorage
-      localStorage.setItem(
-        bookingKey,
-        JSON.stringify({
-          id: bookingId,
-          date: this.selected,
-          slot: this.selectedValue,
-          numberOfPersons: this.numberOfPersons,
-          option: this.selectedOption,
-          restaurantName: this.restaurantName,
-        })
-      );
+      localStorage.setItem(bookingKey, JSON.stringify({
+        id: bookingId,
+        date: this.selected,
+        slot: this.selectedValue,
+        numberOfPersons: this.numberOfPersons,
+        option: this.selectedOption,
+        restaurantName: this.restaurantName
+      }));
+  
+      // Optionally, you can clear the form fields after successful booking
+      this.selectedValue = undefined;
+      this.numberOfPersons = undefined;
+      this.selectedOption = undefined;
     }
   }
-}
+}  
