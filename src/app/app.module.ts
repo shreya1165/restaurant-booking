@@ -6,7 +6,7 @@ import { MenuHeaderComponent } from './component/menu-header/menu-header.compone
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './core/services/token.interceptor';
 import { MatCardModule } from '@angular/material/card';
@@ -33,6 +33,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { BookingListComponent } from './component/booking-list/booking-list.component';
+import { ConfirmationComponent } from './component/confirmation/confirmation.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { EditComponent } from './component/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -41,11 +44,16 @@ import { BookingListComponent } from './component/booking-list/booking-list.comp
     LoaderComponent,
     RestaurantsComponent,
     BookingComponent,
-    BookingListComponent
+    BookingListComponent,
+    ConfirmationComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatTableModule,
+    MatSnackBarModule,
+    MatIconModule,
     MatButtonModule,
     MatToolbar,
     MatRadioModule,

@@ -1,38 +1,33 @@
-<div>
-  <h2>Booking List</h2>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Date Column -->
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{ booking.date }}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let booking">{{ booking.date }}</td>
     </ng-container>
 
     <!-- Slot Column -->
     <ng-container matColumnDef="slot">
-      <mat-header-cell *matHeaderCellDef>Slot</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{ booking.slot }}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef>Slot</th>
+      <td mat-cell *matCellDef="let booking">{{ booking.slot }}</td>
     </ng-container>
 
-    <!-- Number of Persons Column -->
+    <!-- numberOfPersons Column -->
     <ng-container matColumnDef="numberOfPersons">
-      <mat-header-cell *matHeaderCellDef>Persons</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{
-        booking.numberOfPersons
-      }}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef>Number of Persons</th>
+      <td mat-cell *matCellDef="let booking">{{ booking.numberOfPersons }}</td>
     </ng-container>
 
     <!-- Option Column -->
     <ng-container matColumnDef="option">
-      <mat-header-cell *matHeaderCellDef>Option</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{ booking.option }}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef>Option</th>
+      <td mat-cell *matCellDef="let booking">{{ booking.option }}</td>
     </ng-container>
 
     <!-- Restaurant Name Column -->
     <ng-container matColumnDef="restaurantName">
-      <mat-header-cell *matHeaderCellDef>Restaurant</mat-header-cell>
-      <mat-cell *matCellDef="let booking">{{
-        booking.restaurantName
-      }}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef>Restaurant Name</th>
+      <td mat-cell *matCellDef="let booking">{{ booking.restaurantName }}</td>
     </ng-container>
 
     <!-- Actions Column -->
@@ -48,9 +43,8 @@
       </mat-cell>
     </ng-container>
 
-    <!-- Header Row -->
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <!-- Row with Data -->
-    <mat-row *matRowDef="let booking; columns: displayedColumns"></mat-row>
-  </mat-table>
+    <!-- Table Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>
