@@ -25,7 +25,6 @@ export class RestaurantsComponent {
 
   ngOnInit(): void {
     this.store.select(getspinnerstate).subscribe((res) => {
-      console.log(res);
       this.isloading = res;
     });
 

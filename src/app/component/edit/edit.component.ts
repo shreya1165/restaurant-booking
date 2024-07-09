@@ -1,18 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BookingList } from '../../core/interfaces/booking';
-
-
-
-interface TableOption {
-  value: string;
-  viewValue: string;
-}
-
-interface SlotOption {
-  value: string;
-  viewValue: string;
-}
+import { BookingList, Slot } from '../../core/interfaces/booking';
+import { BookingComponent } from '../booking/booking.component';
 
 @Component({
   selector: 'app-edit',
@@ -20,13 +9,13 @@ interface SlotOption {
   styleUrl: './edit.component.css'
 })
 export class EditComponent {
-  slot: SlotOption[] = [
+  slot: Slot[] = [
     { value: '9AM-12PM', viewValue: '9AM-12PM' },
     { value: '12PM-5PM', viewValue: '12PM-5PM' },
     { value: '5PM-10PM', viewValue: '5PM-10PM' },
   ];
 
-  table: TableOption[] = [
+  table: Slot[] = [
     { value: 'table for 2', viewValue: 'Table for 2' },
     { value: 'table for 4', viewValue: 'Table for 4' },
     { value: 'table for 6', viewValue: 'Table for 6' },
@@ -35,7 +24,7 @@ export class EditComponent {
   editedBooking: BookingList;
 
   constructor(
-    public dialogRef: MatDialogRef<EditComponent>,
+    public dialogRef: MatDialogRef<BookingComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { booking: BookingList }
   ) {
     this.editedBooking = { ...data.booking }; 

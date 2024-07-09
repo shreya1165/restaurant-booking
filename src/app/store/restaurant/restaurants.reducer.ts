@@ -3,8 +3,9 @@ import { restaurantState } from "./restaurants.state";
 import { loadRestaurant, restaurantFail, restaurantSucess } from "./restaurants.actions";
 import { BookingState } from "../../core/interfaces/booking";
 import * as BookingActions from '../../store/restaurant/restaurants.actions';
+import { RestaurantModel } from "../../core/interfaces/restaurants";
 
-const _RestaurantReducer = createReducer(restaurantState,
+export const _RestaurantReducer = createReducer(restaurantState,
     on( loadRestaurant, (state)=>{
         return{
             ...state,
@@ -29,12 +30,9 @@ const _RestaurantReducer = createReducer(restaurantState,
             isloading:false
         }
     }),
+    
 
 )
-
-export function RestaurantReducer(state: any, action: Action) {
-    return _RestaurantReducer(state, action)
-}
 
 
 export const initialState: BookingState = {
@@ -46,9 +44,9 @@ export const initialState: BookingState = {
 
 const _bookingReducer = createReducer(
     initialState,
-    on(BookingActions.bookRestaurantSlot, (state, { date, slot }) => ({
+    on(BookingActions.bookRestaurantSlot, (state, ActionBooked) => ({
       ...state,
-      bookedSlot: { date, slot }
+      bookedSlot: ActionBooked
     }))
   );
   

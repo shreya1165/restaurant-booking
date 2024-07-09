@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { RestaurantModel } from '../../core/interfaces/restaurants';
 
 export const selectRestaurantState =
-  createFeatureSelector<RestaurantModel>('restaurant');
+  createFeatureSelector<RestaurantModel>('rb');
 
 export const getrestaurantlist = createSelector(
   selectRestaurantState,

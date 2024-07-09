@@ -55,7 +55,6 @@ export class BookingListComponent implements OnInit {
               const id = key.split('-')[1];
               booking.id = parseInt(id, 10);
             }
-            booking.date = this.datePipe.transform(booking.date, 'dd-MM-yyyy')!;
             return booking;
           } catch (error) {
             console.error('Error parsing booking:', error);
@@ -74,30 +73,32 @@ export class BookingListComponent implements OnInit {
       width: '400px',
       data: { booking },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        // Remove the previous entry from localStorage
+        const localStorageKey = `booking-${result.id}`;
+        localStorage.removeItem(localStorageKey);
+  
+        // Update the booking in localStorage with the new data
+        localStorage.setItem(localStorageKey, JSON.stringify(result));
+  
         // Find the index of the edited booking in the array
         const index = this.bookings.findIndex((b) => b.id === result.id);
         if (index !== -1) {
           // Update the booking in the array
           this.bookings[index] = result;
-
-          this.bookings[index].date = this.datePipe.transform(
-            result.date,
-            'dd-MM-yyyy'
-          )!;
-
+  
+          // Dispatch the editBooking action to update in NgRx store
           this.store.dispatch(editBooking({ booking: result }));
-          // Update localStorage after editing (if needed)
-          localStorage.setItem(`booking-${result.id}`, JSON.stringify(result));
-
+  
           // Refresh the MatTableDataSource
           this.dataSource.data = [...this.bookings];
         }
       }
     });
   }
+  
 
   deleteBooking(booking: BookingList) {
     // Remove from localStorage

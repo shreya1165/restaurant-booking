@@ -6,11 +6,8 @@ import { getrestaurantlist } from '../../store/restaurant/restaurants.selector';
 import { bookRestaurantSlot } from '../../store/restaurant/restaurants.actions';
 import { Restaurants } from '../../core/interfaces/restaurants';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-interface Slot {
-  value: string;
-  viewValue: string;
-}
+import { FormBuilder, Validators } from '@angular/forms';
+import { Slot } from '../../core/interfaces/booking';
 
 @Component({
   selector: 'app-booking',
@@ -18,12 +15,11 @@ interface Slot {
   styleUrls: ['./booking.component.css'],
 })
 export class BookingComponent implements OnInit {
-  Restaurantlist$: Observable<Restaurants[]> | undefined;
-  selected: Date = new Date();
-  selectedValue: string | undefined;
-  numberOfPersons: string | undefined;
-  selectedOption: string | undefined;
+  Restaurantlist$!: Observable<Restaurants[]>;
   restaurantName: string | undefined;
+  bookingIdCounter: number = 1; // Instance-specific booking ID counter
+  bookingForm: any;
+  bookingId: number = 0; // Booking ID for storing the generated booking ID
 
   slot: Slot[] = [
     { value: '9AM-12AM', viewValue: '9AM-12AM' },
@@ -38,16 +34,23 @@ export class BookingComponent implements OnInit {
     { value: 'table for 8', viewValue: 'table for 8' },
   ];
 
-  static bookingIdCounter: number = 1;
-
   constructor(
+    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private store: Store<{ restaurantList: Restaurants[] }>,
     private _snackBar: MatSnackBar,
     private router: Router
-  ) {}
+  ) {
+    this.bookingForm = this.formBuilder.group({
+      numberOfPersons: ['', Validators.required],
+      selected: [new Date(), Validators.required],
+      selectedValue: ['', Validators.required],
+      selectedOption: ['', Validators.required],
+      restaurantName: ['']
+    });
+  }
 
-  openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string): void {
     this._snackBar.open(message, action);
   }
 
@@ -68,36 +71,30 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  booking() {
-    if (
-      this.selectedValue &&
-      this.selected &&
-      this.numberOfPersons &&
-      this.selectedOption &&
-      this.restaurantName
-    ) {
-      const bookingKey = `${
-        this.restaurantName
-      }-${this.selected.toISOString()}-${this.selectedValue}-${
-        this.selectedOption
-      }`;
-
+  booking(): void {
+    if (this.bookingForm.valid) {
+      const { selectedValue, selected, numberOfPersons, selectedOption } = this.bookingForm.value;
+      const persons: string = numberOfPersons || '';
+      const option: string = selectedOption || '';
+      const bookingKey = `${this.restaurantName}-${selected.toISOString()}-${selectedValue}-${option}`;
       const existingBooking = localStorage.getItem(bookingKey);
 
       if (existingBooking) {
         alert('Slot is already booked.');
         return;
       }
-      const bookingId = BookingComponent.bookingIdCounter++;
+      const bookingId = this.bookingIdCounter++;
+
+      this.bookingId = bookingId; // Store the booking ID
 
       this.store.dispatch(
         bookRestaurantSlot({
           id: bookingId,
-          date: this.selected,
-          slot: this.selectedValue,
-          numberOfPersons: this.numberOfPersons,
-          option: this.selectedOption,
-          restaurantName: this.restaurantName,
+          date: selected,
+          slot: selectedValue,
+          numberOfPersons: persons,
+          option: option,
+          restaurantName: this.restaurantName || '',
         })
       );
 
@@ -105,11 +102,11 @@ export class BookingComponent implements OnInit {
         bookingKey,
         JSON.stringify({
           id: bookingId,
-          date: this.selected,
-          slot: this.selectedValue,
-          numberOfPersons: this.numberOfPersons,
-          option: this.selectedOption,
-          restaurantName: this.restaurantName,
+          date: selected,
+          slot: selectedValue,
+          numberOfPersons: persons,
+          option: option,
+          restaurantName: this.restaurantName || '',
         })
       );
 
