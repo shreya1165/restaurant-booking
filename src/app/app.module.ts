@@ -32,7 +32,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { BookingListComponent } from './component/booking-list/booking-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { EditComponent } from './component/edit/edit.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { _RestaurantReducer } from './store/restaurant/restaurants.reducer';
 import { RestaurantEffects } from './store/restaurant/restaurants.effects';
@@ -44,8 +43,7 @@ import { RestaurantEffects } from './store/restaurant/restaurants.effects';
     LoaderComponent,
     RestaurantsComponent,
     BookingComponent,
-    BookingListComponent,
-    EditComponent
+    BookingListComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +53,7 @@ import { RestaurantEffects } from './store/restaurant/restaurants.effects';
     MatTableModule,
     MatSnackBarModule,
     MatIconModule,
+    MatDialogModule,
     MatButtonModule,
     MatToolbar,
     MatRadioModule,

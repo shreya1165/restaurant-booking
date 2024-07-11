@@ -1,40 +1,60 @@
 {
   "posts": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Dosa Palace",
       "img": "https://i0.wp.com/evergreendishes.com/wp-content/uploads/2019/10/Dosa-1.jpg?w=3240&ssl=1",
       "address": "Rajnagar",
       "ratings": "4.3",
       "text": "Flat 15% off + flat 10% off with TRYNEW ",
-      "tables": 10
+      "tables": [2, 4, 6, 10],
+      "slots": [
+        { "value": "9AM-12AM", "viewValue": "9AM-12AM" },
+        { "value": "12PM-5PM", "viewValue": "12PM-5PM" },
+        { "value": "5PM-10PM", "viewValue": "5PM-10PM" }
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Tikka Junction",
       "img": "https://static.fanpage.it/wp-content/uploads/sites/22/2021/08/paneer-tikka.jpg",
       "address": "Delhi",
       "ratings": "4.1",
       "text": "Flat 15% off + flat 10% off with TRYNEW ",
-      "tables": 20
+      "tables": [2, 4, 6, 10],
+      "slots": [
+        { "value": "9AM-12AM", "viewValue": "9AM-12AM" },
+        { "value": "12PM-5PM", "viewValue": "12PM-5PM" },
+        { "value": "5PM-10PM", "viewValue": "5PM-10PM" }
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Biryani by Kilo",
       "img": "https://th.bing.com/th/id/OIP.8iNzP-pAHP3IS5vPJximKwHaE7?w=827&h=551&rs=1&pid=ImgDetMain",
       "address": "Greater Noida",
       "ratings": "4.2",
       "text": "Flat 15% off + flat 10% off with TRYNEW ",
-      "tables": 12
+      "tables": [2, 4, 6, 10],
+      "slots": [
+        { "value": "9AM-12AM", "viewValue": "9AM-12AM" },
+        { "value": "12PM-5PM", "viewValue": "12PM-5PM" },
+        { "value": "5PM-10PM", "viewValue": "5PM-10PM" }
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "TNG Restaurant",
       "img": "https://th.bing.com/th/id/OIP.Rw4OtqahL-DSZb7Wv1oN5QHaE8?w=1024&h=683&rs=1&pid=ImgDetMain",
       "address": "Noida",
       "ratings": "4.4",
       "text": "Flat 15% off + flat 10% off with TRYNEW ",
-      "tables": 10
+      "tables": [2, 4, 6, 10],
+      "slots": [
+        { "value": "9AM-12AM", "viewValue": "9AM-12AM" },
+        { "value": "12PM-5PM", "viewValue": "12PM-5PM" },
+        { "value": "5PM-10PM", "viewValue": "5PM-10PM" }
+      ]
     }
   ]
 }

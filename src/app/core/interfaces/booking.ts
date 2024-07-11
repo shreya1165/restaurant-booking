@@ -5,19 +5,19 @@ export interface BookingState {
   };
 }
 
-export interface BookingList {
-  tableOption: string;
-  id: number;
-  restaurantName: string;
-  option: string;
-  slot: string;
-  date: Date;
-  numberOfPersons: string;
-  Persons: number;
-  Restaurant: string;
-}
 
 export interface Slot {
   value: string;
   viewValue: string;
+}
+
+
+
+export interface Booking {
+  id: number;
+  date: Date;
+  slot: string;
+  numberOfPersons: string;
+  option: string;
+  restaurantName: string;
 }
