@@ -2,10 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { BookingList, Restaurants } from '../../core/interfaces/restaurants';
-import { bookRestaurantSlot, editBooking } from '../../store/restaurant/restaurants.actions';
+import {
+  bookRestaurantSlot,
+  bookRestaurantSlotFail,
+  editBooking,
+} from '../../store/restaurant/restaurants.actions';
 import { getrestaurantlist } from '../../store/restaurant/restaurants.selector';
 import { Slot } from '../../core/interfaces/booking';
 
@@ -15,8 +18,8 @@ import { Slot } from '../../core/interfaces/booking';
   styleUrls: ['./booking.component.css'],
 })
 export class BookingComponent implements OnInit {
-  @Input() initialBooking!: BookingList; 
-  
+  @Input() initialBooking!: BookingList;
+
   bookingForm: FormGroup;
   currentRestaurant!: Restaurants;
   slots: Slot[] = [];
@@ -33,7 +36,7 @@ export class BookingComponent implements OnInit {
       numberOfPersons: ['', Validators.required],
       bookingDate: [new Date(), Validators.required],
       selectedSlot: ['', Validators.required],
-      selectedPosition: ['', Validators.required]
+      selectedPosition: ['', Validators.required],
     });
   }
 
@@ -41,16 +44,21 @@ export class BookingComponent implements OnInit {
     // Fetch restaurants and find the selected one
     this.store.select(getrestaurantlist).subscribe((restaurants) => {
       if (restaurants.length) {
-        const rId: string | null = this.route.snapshot.paramMap.get('id') || null;
+        const restaurantId: string | null =
+          this.route.snapshot.paramMap.get('id') || null;
         const bId = this.route.snapshot.paramMap.get('bookingId') || null;
-        const restaurant = restaurants.find((r) => r.id === String(rId));
+        const restaurant = restaurants.find(
+          (r) => r.id === String(restaurantId)
+        );
         if (restaurant) {
           this.currentRestaurant = restaurant;
           this.tables = this.currentRestaurant.tables;
           this.slots = this.currentRestaurant.slots;
-          this.bookingForm.patchValue({ restaurantName: this.currentRestaurant.name });
+          this.bookingForm.patchValue({
+            restaurantName: this.currentRestaurant.name,
+          });
         }
-        
+
         // If bId is provided, load the initial booking details for editing
         if (bId) {
           const initialBooking = this.getBookingFromLocalStorage(Number(bId));
@@ -60,7 +68,7 @@ export class BookingComponent implements OnInit {
               numberOfPersons: this.initialBooking.numberOfPersons,
               bookingDate: this.initialBooking.date,
               selectedSlot: this.initialBooking.slot,
-              selectedPosition: this.initialBooking.option
+              selectedPosition: this.initialBooking.option,
             });
           }
         }
@@ -68,24 +76,24 @@ export class BookingComponent implements OnInit {
     });
   }
   getBookingFromLocalStorage(id: number): BookingList | undefined {
-    const bookings: BookingList[] = JSON.parse(localStorage.getItem('finalBooking') || '[]');
+    const bookings: BookingList[] = JSON.parse(
+      localStorage.getItem('finalBooking') || '[]'
+    );
     return bookings.find((booking) => booking.id === id);
   }
-  
-  
 
   random(): number {
     const num = Math.random() * 1000;
     const round = Math.round(num);
     return round;
   }
-
   booking(): void {
     if (this.bookingForm.valid) {
-      const { selectedSlot, bookingDate, numberOfPersons, selectedPosition } = this.bookingForm.value;
-  
+      const { selectedSlot, bookingDate, numberOfPersons, selectedPosition } =
+        this.bookingForm.value;
+
       let booking: BookingList;
-      
+
       if (this.initialBooking) {
         // Editing existing booking
         booking = {
@@ -93,14 +101,24 @@ export class BookingComponent implements OnInit {
           date: bookingDate,
           slot: selectedSlot,
           numberOfPersons: numberOfPersons,
-          option: selectedPosition
+          option: selectedPosition,
         };
-        
+
         // Update local storage with edited booking
         this.updateLocalStorage(booking);
-        
+
         // Dispatch action to update booking
         this.store.dispatch(editBooking({ booking }));
+
+        // Display success message
+        this._snackBar.open('Booking updated!', 'Go to Home', {
+          duration: 5000,
+        });
+
+        // Navigate to list after 2 seconds
+        setTimeout(() => {
+          this.router.navigate(['/list']);
+        }, 2000);
       } else {
         // Creating new booking
         booking = {
@@ -110,47 +128,54 @@ export class BookingComponent implements OnInit {
           numberOfPersons: numberOfPersons,
           option: selectedPosition,
           restaurantName: this.currentRestaurant.name,
-          rId: this.currentRestaurant?.id,
-          tableOption: '',
-          Persons: 0,
-          Restaurant: ''
+          restaurantId: this.currentRestaurant?.id,
         };
-        
+
         // Dispatch action to book restaurant slot
         this.store.dispatch(bookRestaurantSlot({ booking }));
-        
+
         // Update local storage with new booking
-        let bookings: BookingList[] = JSON.parse(localStorage.getItem('finalBooking') || '[]');
+        let bookings: BookingList[] = JSON.parse(
+          localStorage.getItem('finalBooking') || '[]'
+        );
         bookings.push(booking);
         localStorage.setItem('finalBooking', JSON.stringify(bookings));
+
+        // Display success message
+        this._snackBar.open('Booking successful!', 'Thank you', {
+          duration: 5000,
+        });
+
+        // Navigate to list after 2 seconds
+        setTimeout(() => {
+          this.router.navigate(['/list']);
+        }, 2000);
       }
-  
-      // Display success message and navigate (optional)
-      this._snackBar.open('Booking updated!', 'Go to Home', { duration: 5000 })
-         {
-          setTimeout(() => {
-            this.router.navigate(['/list']);
-          }, 2000);
-          
-        };
+    } else {
+      this.store.dispatch(bookRestaurantSlotFail({ errorMessage: 'error' }));
+      // Handle form validation errors
+      this._snackBar.open('Error occurred, please try again.', 'Close', {
+        duration: 3000,
+      });
     }
   }
-  updateLocalStorage(booking: BookingList) {
-    let bookings: BookingList[] = JSON.parse(localStorage.getItem('finalBooking') || '[]');
-  
+
+  updateLocalStorage(booking: BookingList) :void{
+    let bookings: BookingList[] = JSON.parse(
+      localStorage.getItem('finalBooking') || '[]'
+    );
+
     // Find the index of the booking to update
     const index = bookings.findIndex((b) => b.id === booking.id);
-  
+
     if (index !== -1) {
       // Update the booking in the array
       bookings[index] = booking;
-  
+
       // Update the local storage
       localStorage.setItem('finalBooking', JSON.stringify(bookings));
     } else {
       console.error('Booking not found in local storage:', booking);
     }
   }
-  
-  
 }

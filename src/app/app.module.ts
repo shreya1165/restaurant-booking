@@ -78,8 +78,6 @@ import { RestaurantEffects } from './store/restaurant/restaurants.effects';
   ],
   providers: [DatePipe, provideHttpClient(withInterceptors([tokenInterceptor])),
   MasterServiceService, 
-  // provideStore({ restaurant: RestaurantReducer }),
-  // provideEffects([RestaurantEffects])
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]

@@ -7,7 +7,7 @@ import { BookingList, Restaurants } from '../interfaces/restaurants';
   providedIn: 'root',
 })
 export class MasterServiceService {
-  private readonly bookingKey = 'finalBooking'; // Assuming 'finalBooking' is the key in localStorage for bookings
+  private readonly bookingKey = 'finalBooking';
 
   constructor(private http: HttpClient) {}
 
@@ -29,5 +29,4 @@ export class MasterServiceService {
       return of([]);
     }
   }
-
 }

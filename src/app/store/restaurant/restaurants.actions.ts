@@ -1,19 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 import { BookingList, Restaurants } from '../../core/interfaces/restaurants';
-import { Booking } from '../../core/interfaces/booking';
-
 
 export const LOAD_RESTAURANT = '[Restaurant] load Restaurant';
 export const LOAD_RESTAURANT_SUCCESS = '[Restaurant] load Restaurant success';
 export const LOAD_RESTAURANT_FAIL = '[Restaurant] load Restaurant fail';
-export const LOADBOOKING='[booking] load booking';
-export const LOADBOOKING_SUCCESS='[booking] load booking success';
-export const LOADBOOKING_FAIL='[booking] load booking fail';
+export const LOADBOOKING = '[booking] load booking';
+export const LOADBOOKING_SUCCESS = '[booking] load booking success';
+export const LOADBOOKING_FAIL = '[booking] load booking fail';
 
 export const loadRestaurant = createAction(LOAD_RESTAURANT);
 export const restaurantSucess = createAction(
   LOAD_RESTAURANT_SUCCESS,
-  props<{ list: Restaurants[]}>()
+  props<{ list: Restaurants[] }>()
 );
 export const restaurantFail = createAction(
   LOAD_RESTAURANT_FAIL,
@@ -23,16 +21,21 @@ export const restaurantFail = createAction(
 export const loadBooking = createAction(LOADBOOKING);
 export const loadBookingSuccess = createAction(
   '[Booking] Load Booking Success',
-  props<{ bookings: BookingList[] }>()  
+  props<{ bookings: BookingList[] }>()
 );
-export const loadBookingFail=createAction(
+export const loadBookingFail = createAction(
   LOADBOOKING_FAIL,
-  props<{errorMessage: string}>()
+  props<{ errorMessage: string }>()
 );
 
 export const bookRestaurantSlot = createAction(
   '[Booking] Book Restaurant Slot',
   props<{ booking: BookingList }>()
+);
+
+export const bookRestaurantSlotFail = createAction(
+  '[Booking] Book Restaurant Slot Fail',
+  props<{ errorMessage: string }>()
 );
 
 export const updateDetails = createAction(

@@ -1,10 +1,8 @@
-import { BookingModel, RestaurantModel } from '../../core/interfaces/restaurants';
+import { RestaurantModel } from '../../core/interfaces/restaurants';
 
 export const restaurantState: RestaurantModel = {
   list: [],
   errorMessage: '',
   isloading: false,
-  bookings:[]
+  bookings: [],
 };
-
-

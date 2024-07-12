@@ -1,6 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { restaurantState } from './restaurants.state';
 import {
+  bookRestaurantSlot,
+  bookRestaurantSlotFail,
   deleteBooking,
   editBooking,
   loadBooking,
@@ -38,23 +40,24 @@ export const _RestaurantReducer = createReducer(
     bookings: action.bookings,
     isloading: false,
   })),
-  on(restaurantFail, (state, action) => (
-    {
+  on(bookRestaurantSlot, (state, action) => ({
     ...state,
-    errorMessage: action.errorMessage,
+    booking: action.booking,
     isloading: false,
+  })),
+  on(bookRestaurantSlotFail, (state, action) => ({
+    ...state,
+    isloading: true,
+    errorMessage: '',
   })),
   on(editBooking, (state, action) => ({
     ...state,
-     booking: action.booking,
+    booking: action.booking,
     isloading: false,
   })),
   on(deleteBooking, (state, action) => ({
     ...state,
-     booking: action.booking,
+    booking: action.booking,
     isloading: false,
-  })),
+  }))
 );
-
-
-

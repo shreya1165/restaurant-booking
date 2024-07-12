@@ -25,7 +25,9 @@ export class RestaurantEffects {
       switchMap(() =>
         this.service.getAllRestaurants().pipe(
           map((data) => restaurantSucess({ list: data })),
-          catchError((error) => of(restaurantFail({ errorMessage: error.message })))
+          catchError((error) =>
+            of(restaurantFail({ errorMessage: error.message }))
+          )
         )
       )
     )
@@ -36,8 +38,18 @@ export class RestaurantEffects {
       ofType(loadBooking),
       switchMap(() =>
         this.service.getAllBookings().pipe(
-          map((data) => loadBookingSuccess({ bookings: data })), 
-          catchError((error) => of(loadBookingFail({ errorMessage: error.message })))
+          switchMap((bookings) => {
+            if (bookings.length > 0) {
+              return of(loadBookingSuccess({ bookings }));
+            } else {
+              return of(
+                loadBookingFail({ errorMessage: 'No bookings found.' })
+              );
+            }
+          }),
+          catchError((error) =>
+            of(loadBookingFail({ errorMessage: error.message }))
+          )
         )
       )
     )
