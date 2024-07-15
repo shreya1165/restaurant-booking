@@ -8,6 +8,8 @@ import {
   loadBookingSuccess,
   loadBookingFail,
   loadBooking,
+  bookRestaurantSlot,
+  bookRestaurantSlotFail,
 } from './restaurants.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -49,6 +51,19 @@ export class RestaurantEffects {
           }),
           catchError((error) =>
             of(loadBookingFail({ errorMessage: error.message }))
+          )
+        )
+      )
+    )
+  );
+  bookSlot$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(bookRestaurantSlot),
+      switchMap(({ booking }) =>
+        this.service.bookRestaurantSlot(booking).pipe(
+          map(() => bookRestaurantSlot({ booking })),
+          catchError((error) =>
+            of(bookRestaurantSlotFail({ errorMessage: error.message }))
           )
         )
       )

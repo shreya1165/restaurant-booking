@@ -55,10 +55,10 @@ export const editBooking = createAction(
   props<{ booking: BookingList }>()
 );
 
-// export const deleteBooking = createAction(
-//   '[Booking] Delete Booking',
-//   props<{ id: number }>()
-// );
+export const editBookingFail = createAction(
+  '[Booking] Edit Booking Fail',
+  props<{ errorMessage: string  }>()
+);
 
 export const deleteBooking = createAction(
   '[Booking] delete booking',

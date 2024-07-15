@@ -5,6 +5,7 @@ import {
   bookRestaurantSlotFail,
   deleteBooking,
   editBooking,
+  editBookingFail,
   loadBooking,
   loadBookingSuccess,
   loadRestaurant,
@@ -47,12 +48,18 @@ export const _RestaurantReducer = createReducer(
   })),
   on(bookRestaurantSlotFail, (state, action) => ({
     ...state,
+    errorMessage: action.errorMessage,
     isloading: true,
-    errorMessage: '',
   })),
   on(editBooking, (state, action) => ({
     ...state,
     booking: action.booking,
+    isloading: true,
+    errorMessage: '',
+  })),
+  on(editBookingFail, (state, { errorMessage }) => ({
+    ...state,
+    errorMessage: errorMessage,
     isloading: false,
   })),
   on(deleteBooking, (state, action) => ({

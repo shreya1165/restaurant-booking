@@ -1,4 +1,8 @@
-<mat-card class="card">
+<div *ngIf="isloading">
+  <app-loader></app-loader>
+</div>
+
+<mat-card class="card" *ngIf="!isloading">
   <form [formGroup]="bookingForm" (ngSubmit)="booking()">
     <mat-form-field class="example-full-width">
       <mat-label>Select Table size</mat-label>

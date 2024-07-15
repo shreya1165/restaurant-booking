@@ -9,8 +9,9 @@ import {
   bookRestaurantSlotFail,
   editBooking,
 } from '../../store/restaurant/restaurants.actions';
-import { getrestaurantlist } from '../../store/restaurant/restaurants.selector';
+import { getrestaurantlist, getspinnerstate } from '../../store/restaurant/restaurants.selector';
 import { Slot } from '../../core/interfaces/booking';
+import { MasterServiceService } from '../../core/services/master-service.service';
 
 @Component({
   selector: 'app-booking',
@@ -19,7 +20,7 @@ import { Slot } from '../../core/interfaces/booking';
 })
 export class BookingComponent implements OnInit {
   @Input() initialBooking!: BookingList;
-
+  isloading: boolean | undefined;
   bookingForm: FormGroup;
   currentRestaurant!: Restaurants;
   slots: Slot[] = [];
@@ -30,7 +31,8 @@ export class BookingComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<{ restaurantList: Restaurants[] }>,
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private masterService:MasterServiceService
   ) {
     this.bookingForm = this.formBuilder.group({
       numberOfPersons: ['', Validators.required],
@@ -41,6 +43,9 @@ export class BookingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.select(getspinnerstate).subscribe((res) => {
+      this.isloading = res;
+    });
     // Fetch restaurants and find the selected one
     this.store.select(getrestaurantlist).subscribe((restaurants) => {
       if (restaurants.length) {
@@ -132,8 +137,7 @@ export class BookingComponent implements OnInit {
         };
 
         // Dispatch action to book restaurant slot
-        this.store.dispatch(bookRestaurantSlot({ booking }));
-
+        this.masterService.bookRestaurantSlot(booking);
         // Update local storage with new booking
         let bookings: BookingList[] = JSON.parse(
           localStorage.getItem('finalBooking') || '[]'
@@ -167,7 +171,7 @@ export class BookingComponent implements OnInit {
 
     // Find the index of the booking to update
     const index = bookings.findIndex((b) => b.id === booking.id);
-
+    
     if (index !== -1) {
       // Update the booking in the array
       bookings[index] = booking;
