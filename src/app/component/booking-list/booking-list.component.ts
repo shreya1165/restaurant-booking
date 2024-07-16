@@ -34,7 +34,6 @@ export class BookingListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadBooking());
     this.store.select(getBookingList).subscribe((bookings) => {
       this.bookings = bookings;
       this.dataSource = new MatTableDataSource(bookings);
@@ -46,36 +45,8 @@ export class BookingListComponent implements OnInit {
     this.router.navigate(['/edit', booking.restaurantId, booking.id]);
   }
 
-  deleteBooking(booking: BookingList):void {
-    this.bookings = this.bookings.filter((b) => b.id !== booking.id);
-
-    this.dataSource.data = this.bookings;
-
-    this.store.dispatch(deleteBooking({ booking }));
-
-    let localStorageBookings: BookingList[] = JSON.parse(
-      localStorage.getItem('finalBooking') || '[]'
-    );
-    localStorageBookings = localStorageBookings.filter(
-      (b) => b.id !== booking.id
-    );
-    localStorage.setItem('finalBooking', JSON.stringify(localStorageBookings));
-  }
-
-  updateLocalStorage(updatedBooking?: BookingList):void {
-    let bookings: BookingList[] = JSON.parse(
-      localStorage.getItem('finalBooking') || '[]'
-    );
-
-    this.bookings.forEach((booking) => {
-      const index = bookings.findIndex((b) => b.id === booking.id);
-      if (index !== -1) {
-        bookings[index] = booking;
-      } else {
-        bookings.push(booking);
-      }
-    });
-
-    localStorage.setItem('finalBooking', JSON.stringify(bookings));
+  deleteBooking(booking: BookingList): void {
+    // Dispatch the deleteBooking action
+    this.store.dispatch(deleteBooking({ booking, currentBookings: this.bookings }));
   }
 }

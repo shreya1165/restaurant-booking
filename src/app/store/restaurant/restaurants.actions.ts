@@ -1,14 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { BookingList, Restaurants } from '../../core/interfaces/restaurants';
-
 export const LOAD_RESTAURANT = '[Restaurant] load Restaurant';
 export const LOAD_RESTAURANT_SUCCESS = '[Restaurant] load Restaurant success';
 export const LOAD_RESTAURANT_FAIL = '[Restaurant] load Restaurant fail';
 export const LOADBOOKING = '[booking] load booking';
 export const LOADBOOKING_SUCCESS = '[booking] load booking success';
 export const LOADBOOKING_FAIL = '[booking] load booking fail';
+export const RESET_SUCCESS = '[booking] reset success';
 
 export const loadRestaurant = createAction(LOAD_RESTAURANT);
+export const resetSucess = createAction(RESET_SUCCESS);
 export const restaurantSucess = createAction(
   LOAD_RESTAURANT_SUCCESS,
   props<{ list: Restaurants[] }>()
@@ -30,7 +31,12 @@ export const loadBookingFail = createAction(
 
 export const bookRestaurantSlot = createAction(
   '[Booking] Book Restaurant Slot',
-  props<{ booking: BookingList }>()
+  props<{ booking: BookingList,currentBookings:BookingList[]}>()
+);
+
+export const bookRestaurantSlotSuccess = createAction(
+  '[Booking] Book Restaurant Slot Success',
+  props<{ bookings: BookingList[], success: string}>()
 );
 
 export const bookRestaurantSlotFail = createAction(
@@ -52,7 +58,12 @@ export const updateDetails = createAction(
 
 export const editBooking = createAction(
   '[Booking] edit booking',
-  props<{ booking: BookingList }>()
+  props<{ bookings: BookingList,currentBookings:BookingList[]}>()
+);
+
+export const editBookingSuccess = createAction(
+  '[Booking] edit booking Success',
+  props<{ booking: BookingList[], success: string }>()
 );
 
 export const editBookingFail = createAction(
@@ -62,5 +73,15 @@ export const editBookingFail = createAction(
 
 export const deleteBooking = createAction(
   '[Booking] delete booking',
-  props<{ booking: BookingList }>()
+  props<{ booking: BookingList,currentBookings:BookingList[]}>()
+);
+
+export const deleteBookingSuccess = createAction(
+  '[Booking] delete booking Success',
+  props<{ bookings: BookingList[], success: string}>()
+);
+
+export const deleteBookingFail = createAction(
+  '[Booking] delete booking Fail',
+  props<{ errorMessage: string  }>()
 );

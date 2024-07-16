@@ -24,6 +24,7 @@ export interface BookingList {
 export interface RestaurantModel {
   list: Restaurants[];
   errorMessage: string;
+  success:string;
   isloading: boolean;
   bookings: BookingList[];
 }

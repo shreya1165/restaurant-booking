@@ -10,16 +10,23 @@ import {
   loadBooking,
   bookRestaurantSlot,
   bookRestaurantSlotFail,
+  bookRestaurantSlotSuccess,
+  editBooking,
+  editBookingSuccess,
+  deleteBooking,
+  deleteBookingSuccess,
+  deleteBookingFail,
 } from './restaurants.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable()
 export class RestaurantEffects {
+  private _snackBar: any;
   constructor(
     private action$: Actions,
     private service: MasterServiceService
-  ) {}
+  ) { }
 
   loadRestaurant$ = createEffect(() =>
     this.action$.pipe(
@@ -56,12 +63,17 @@ export class RestaurantEffects {
       )
     )
   );
+
   bookSlot$ = createEffect(() =>
     this.action$.pipe(
       ofType(bookRestaurantSlot),
-      switchMap(({ booking }) =>
-        this.service.bookRestaurantSlot(booking).pipe(
-          map(() => bookRestaurantSlot({ booking })),
+      switchMap(({ booking, currentBookings }) =>
+        this.service.bookRestaurantSlot(booking, currentBookings).pipe(
+          map((updatedBookings) => bookRestaurantSlotSuccess({
+            bookings: updatedBookings,
+            success: 'success'
+          })),
+
           catchError((error) =>
             of(bookRestaurantSlotFail({ errorMessage: error.message }))
           )
@@ -69,4 +81,43 @@ export class RestaurantEffects {
       )
     )
   );
+
+  editSlot$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(editBooking),
+      switchMap(({ bookings, currentBookings }) =>
+        {
+          return this.service.editSlot(bookings, currentBookings).pipe(
+            map((updatedBookings) => editBookingSuccess({
+              booking: updatedBookings,
+              success: 'success'
+            })),
+
+            catchError((error) => of(bookRestaurantSlotFail({ errorMessage: error.message }))
+            )
+          );
+        }
+      )
+    )
+  );
+
+
+  deleteSlot$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(deleteBooking),
+      switchMap(({ booking, currentBookings }) =>
+        this.service.deleteSlot(booking, currentBookings).pipe(
+          map((updatedBookings) => deleteBookingSuccess({
+            bookings: updatedBookings,
+            success: 'success'
+          })),
+          catchError((error) =>
+            of(deleteBookingFail({ errorMessage: error.message }))
+          )
+        )
+      )
+    )
+  );
+  
+  
 }

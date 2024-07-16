@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadRestaurant } from './store/restaurant/restaurants.actions';
+import { loadBooking, loadRestaurant } from './store/restaurant/restaurants.actions';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +11,6 @@ export class AppComponent {
   title = 'ngrx';
   constructor(private store :Store){
     this.store.dispatch(loadRestaurant());
+    this.store.dispatch(loadBooking());
   }
 }

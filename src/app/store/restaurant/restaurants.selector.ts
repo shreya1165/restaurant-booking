@@ -22,3 +22,8 @@ export const getErrorMessage = createSelector(
   selectRestaurantState,
   (state: RestaurantModel) => state.errorMessage
 );
+
+export const getSuccessMessage = createSelector(
+  selectRestaurantState,
+  (state: RestaurantModel) => state.success
+);
