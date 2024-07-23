@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { BookingList, Restaurants } from '../../core/interfaces/restaurants';
+import { Restaurants } from '../../../core/interfaces/restaurants';
 import { Store } from '@ngrx/store';
-import {
-  getrestaurantlist,
-  getspinnerstate,
-} from '../../store/restaurant/restaurants.selector';
+import { getrestaurantlist, restaurantSpinner } from '../../../store/restaurant-store/restaurant.selector';
+import { BookingList } from '../../../core/interfaces/booking';
 
 @Component({
   selector: 'app-restaurants',
@@ -13,20 +11,20 @@ import {
   styleUrl: './restaurants.component.css',
 })
 export class RestaurantsComponent {
-  dataSource: MatTableDataSource<Restaurants>;
+  RestaurantdataSource: MatTableDataSource<Restaurants>;
   bookingDataSource: MatTableDataSource<BookingList>;
   displayColumns: string[] = ['ratings', 'name', 'address', 'img', 'text'];
 
-  isloading: boolean | undefined;
+  restaurantLoading: boolean | undefined;
 
   constructor(private store: Store) {
-    this.dataSource = new MatTableDataSource<Restaurants>();
+    this.RestaurantdataSource = new MatTableDataSource<Restaurants>();
     this.bookingDataSource = new MatTableDataSource<BookingList>();
   }
 
   ngOnInit(): void {
-    this.store.select(getspinnerstate).subscribe((res) => {
-      this.isloading = res;
+    this.store.select(restaurantSpinner).subscribe((res) => {
+      this.restaurantLoading = res;
     });
 
     this.loadInitialData();
@@ -37,7 +35,7 @@ export class RestaurantsComponent {
       .select(getrestaurantlist)
       .subscribe((restaurants: Restaurants[]) => {
         if (restaurants && restaurants.length > 0) {
-          this.dataSource.data = restaurants;
+          this.RestaurantdataSource.data = restaurants;
         }
       });
   }

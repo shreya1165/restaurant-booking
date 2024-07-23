@@ -1,13 +1,18 @@
-export interface Slot {
-  value: string;
-  viewValue: string;
-}
 
-export interface Booking {
+
+
+export interface BookingList {
+  restaurantId: number;
   id: number;
-  date: Date;
-  slot: string;
-  numberOfPersons: string;
-  option: string;
   restaurantName: string;
+  option: string;
+  slot: string;
+  date: Date;
+  numberOfPersons: string;
+}
+export interface BookingModel {
+  success:string | null;
+  errorMessage: string | null;
+  bookings: BookingList[];
+  bookingLoading:boolean
 }

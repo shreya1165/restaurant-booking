@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RestaurantsComponent } from './component/restaurants/restaurants.component';
-import { BookingComponent } from './component/booking/booking.component';
-import { BookingListComponent } from './component/booking-list/booking-list.component';
+import { RestaurantsComponent } from './component/restaurant/restaurants/restaurants.component';
+import { BookingComponent } from './component/bookings/booking/booking.component';
+import { BookingListComponent } from './component/bookings/booking-list/booking-list.component';
 
 const routes: Routes = [
   { path: '', component: RestaurantsComponent },
@@ -28,4 +28,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

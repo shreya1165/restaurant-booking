@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/cor
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MenuHeaderComponent } from './component/menu-header/menu-header.component';
+import { MenuHeaderComponent } from './component/shared/menu-header/menu-header.component';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -24,17 +24,18 @@ import { MatSelectModule } from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MasterServiceService } from './core/services/master-service.service';
-import { RestaurantsComponent } from './component/restaurants/restaurants.component';
+import { RestaurantsComponent } from './component/restaurant/restaurants/restaurants.component';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { BookingComponent } from './component/booking/booking.component';
+import { BookingComponent } from './component/bookings/booking/booking.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
-import { BookingListComponent } from './component/booking-list/booking-list.component';
+import { BookingListComponent } from './component/bookings/booking-list/booking-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { _RestaurantReducer } from './store/restaurant/restaurants.reducer';
-import { RestaurantEffects } from './store/restaurant/restaurants.effects';
+import { RestaurantEffects } from './store/restaurant-store/restaurant.effects';
+import { appReducer } from './store/app.state';
+import { BookingEffects } from './store/booking-store/booking.effects';
 
 @NgModule({
   declarations: [
@@ -72,9 +73,9 @@ import { RestaurantEffects } from './store/restaurant/restaurants.effects';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    StoreModule.forRoot(({ rb: _RestaurantReducer })),
+    StoreModule.forRoot(appReducer),
     StoreDevtoolsModule.instrument({maxAge: 25}),
-    EffectsModule.forRoot([RestaurantEffects]),
+    EffectsModule.forRoot([RestaurantEffects,BookingEffects]),
   ],
   providers: [DatePipe, provideHttpClient(withInterceptors([tokenInterceptor])),
   MasterServiceService, 

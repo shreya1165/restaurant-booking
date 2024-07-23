@@ -1,13 +1,13 @@
-<div *ngIf="isloading">
+<div *ngIf="bookingLoading">
   <app-loader></app-loader>
 </div>
 
-<mat-card class="card" *ngIf="!isloading">
+<mat-card class="card" *ngIf="!bookingLoading">
   <form [formGroup]="bookingForm" (ngSubmit)="booking()">
     <mat-form-field class="example-full-width">
       <mat-label>Select Table size</mat-label>
       <mat-select formControlName="numberOfPersons">
-        <mat-option *ngFor="let table of tables" [value]="table">Table for {{ table }}</mat-option>
+        <mat-option *ngFor="let table of tableSize" [value]="table">Table for {{ table }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -21,7 +21,7 @@
     <mat-form-field class="example-full-width">
       <mat-label>Select Time Slot</mat-label>
       <mat-select formControlName="selectedSlot">
-        <mat-option *ngFor="let slot of slots" [value]="slot.value">{{ slot.viewValue }}</mat-option>
+        <mat-option *ngFor="let slot of timeSlots" [value]="slot">{{ slot }}</mat-option>
       </mat-select>
     </mat-form-field>
 

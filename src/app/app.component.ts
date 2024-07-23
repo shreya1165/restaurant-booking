@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadBooking, loadRestaurant } from './store/restaurant/restaurants.actions';
+import { loadRestaurants } from './store/restaurant-store/restaurant.action';
+import { loadBookingsList } from './store/booking-store/booking.action';
+
 
 @Component({
   selector: 'app-root',
@@ -9,8 +11,8 @@ import { loadBooking, loadRestaurant } from './store/restaurant/restaurants.acti
 })
 export class AppComponent {
   title = 'ngrx';
-  constructor(private store :Store){
-    this.store.dispatch(loadRestaurant());
-    this.store.dispatch(loadBooking());
+  constructor(private store: Store) {
+    this.store.dispatch(loadRestaurants());
+    this.store.dispatch(loadBookingsList());
   }
 }

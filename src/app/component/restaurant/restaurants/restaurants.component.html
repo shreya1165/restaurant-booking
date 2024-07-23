@@ -1,11 +1,11 @@
-<div *ngIf="isloading">
+<div *ngIf="restaurantLoading">
     <app-loader></app-loader>
 </div>
 
-<ng-container *ngIf="!isloading">
+<ng-container *ngIf="!restaurantLoading">
 
     <mat-grid-list class="grid" cols="4" rowHeight="500px">
-        <mat-grid-tile *ngFor="let element of dataSource.data" [routerLink]="['/booking', element.id]">
+        <mat-grid-tile *ngFor="let element of RestaurantdataSource.data" [routerLink]="['/booking', element.id]">
             <mat-card class="example-card" appearance="outlined">
                 <mat-card-header>
 
@@ -29,7 +29,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-card *ngIf="dataSource.data.length === 0">
+    <mat-card *ngIf="RestaurantdataSource.data.length === 0">
         <mat-card-content>
             No data available.
         </mat-card-content>

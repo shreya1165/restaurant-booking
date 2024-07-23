@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import {
-  deleteBooking,
-  loadBooking,
-} from '../../store/restaurant/restaurants.actions';
-import { BookingList } from '../../core/interfaces/restaurants';
-import {
-  getBookingList,
-} from '../../store/restaurant/restaurants.selector';
 import { Router } from '@angular/router';
+import { getBookingList } from '../../../store/booking-store/booking.selector';
+import { deleteBooking } from '../../../store/booking-store/booking.action';
+import { BookingList } from '../../../core/interfaces/booking';
 
 @Component({
   selector: 'app-booking-list',
